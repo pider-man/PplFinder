@@ -3,16 +3,24 @@ import styled from "styled-components";
 export const UserList = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  min-width: 50vw;
+  max-width: 50vw;
 `;
 
 export const List = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 35px;
   width: 500px;
+  gap: 35px;
   height: calc(100vh - 270px);
   margin-block-start: 30px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  border: 2px outset #dcdcdc;
+  background: #6f6f6f;
+  padding: 2em;
 `;
 
 export const User = styled.div`
@@ -50,6 +58,7 @@ export const IconButtonWrapper = styled.div`
 export const Filters = styled.div`
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   & > * {
     margin-inline-end: 8px;
   }
