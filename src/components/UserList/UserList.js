@@ -42,7 +42,6 @@ const UserList = ({ users, isLoading }) => {
     index > -1 ? newArr.splice(index, 1) : newArr.push(user);
     localStorage.setItem("favorites", JSON.stringify(newArr));
     setFavorites(newArr);
-    console.log(newArr);
   };
 
   const handleMouseEnter = (index) => {
@@ -53,10 +52,6 @@ const UserList = ({ users, isLoading }) => {
     setHoveredUserId();
   };
 
-  if (usersList.length === 0 && !isLoading) {
-    return <Text size="22px">No Users</Text>;
-  }
-
   return (
     <S.UserList>
       <S.Filters>
@@ -66,15 +61,21 @@ const UserList = ({ users, isLoading }) => {
         <CheckBox value="Germany" onChange={handleFilter} label="Germany" />
         <CheckBox value="United States" onChange={handleFilter} label="United States" />
       </S.Filters>
-      <Users
-        usersList={usersList}
-        favorites={favorites}
-        isLoading={isLoading}
-        hoveredUserId={hoveredUserId}
-        handleMouseEnter={handleMouseEnter}
-        handleMouseLeave={handleMouseLeave}
-        handleFav={handleFav}
-      />
+      {usersList.length === 0 && !isLoading ? (
+        <S.List>
+          <Text size="22px">No Users</Text>
+        </S.List>
+      ) : (
+        <Users
+          usersList={usersList}
+          favorites={favorites}
+          isLoading={isLoading}
+          hoveredUserId={hoveredUserId}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
+          handleFav={handleFav}
+        />
+      )}
     </S.UserList>
   );
 };
