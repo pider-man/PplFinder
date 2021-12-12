@@ -1,11 +1,9 @@
 import React from "react";
 import Text from "components/Text";
 import UserList from "components/UserList";
-import { usePeopleFetch } from "hooks";
 import * as S from "./style";
 
-const Home = () => {
-  const { users, isLoading } = usePeopleFetch();
+const Home = (props) => {
 
   return (
     <S.Home>
@@ -15,7 +13,7 @@ const Home = () => {
             PplFinder
           </Text>
         </S.Header>
-        <UserList users={users} isLoading={isLoading} />
+        <UserList users={props.users} isLoading={props.isLoading} />
       </S.Content>
     </S.Home>
   );

@@ -6,20 +6,17 @@ export const usePeopleFetch = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("users")) {
-      fetchUsers();
-    }else{
-      setUsers(JSON.parse(localStorage.getItem("users")));
-    }
+    fetchUsers();
   }, []);
 
   async function fetchUsers() {
     setIsLoading(true);
     const response = await axios.get(`https://randomuser.me/api/?results=25&page=1`);
+    if (!localStorage.getItem("favorites")) {
+      localStorage.setItem("favorites", JSON.stringify([]));
+    }
     setIsLoading(false);
     setUsers(response.data.results);
-    localStorage.setItem("users", JSON.stringify(response.data.results));
-    localStorage.setItem("favorites", JSON.stringify([]));
   }
 
   return { users, isLoading, fetchUsers };

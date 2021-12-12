@@ -6,43 +6,25 @@ import Divider from "@material-ui/core/Divider";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import * as S from "./style";
 
-const UserList = ({ usersList, isLoading, isOnlyFavs }) => {
-  const [hoveredUserId, setHoveredUserId] = useState();
-  const [users, setUsers] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    setFavorites(JSON.parse(localStorage.getItem("favorites")));
-    setUsers(
-      isOnlyFavs ? usersList.filter((u) => favorites.includes(u.login.username)) : usersList
-    );
-  }, [usersList, isOnlyFavs, favorites]);
-
-  const handleMouseEnter = (index) => {
-    setHoveredUserId(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredUserId();
-  };
-
-  const handleFav = (user) => {
-    let newArr = JSON.parse(localStorage.getItem("favorites"));
-    const index = newArr.indexOf(user);
-    index > -1 ? newArr.splice(index, 1) : newArr.push(user);
-    setFavorites(newArr);
-    localStorage.setItem("favorites", JSON.stringify(newArr));
-  };
-
+const Users = ({
+  usersList,
+  favorites,
+  isLoading,
+  handleFav,
+  showOnlyFavs,
+  handleMouseEnter,
+  handleMouseLeave,
+  hoveredUserId,
+}) => {
   return (
     <S.List>
-      {users.map((user, index) => {
+      {usersList.map((user, index) => {
         return (
           <React.Fragment key={user.login.username}>
             <S.User
               key={user.login.username}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
+              onMouseEnter={() => !showOnlyFavs && handleMouseEnter(index)}
+              onMouseLeave={() => !showOnlyFavs && handleMouseLeave()}
             >
               <S.UserPicture src={user?.picture.large} alt="" />
               <S.UserInfo>
@@ -59,10 +41,12 @@ const UserList = ({ usersList, isLoading, isOnlyFavs }) => {
               </S.UserInfo>
               <S.IconButtonWrapper
                 isVisible={
-                  index === hoveredUserId || favorites.includes(user.login.username)
+                  index === hoveredUserId || showOnlyFavs
+                    ? usersList.includes(user)
+                    : favorites.find((u) => u.login.uuid === user.login.uuid)
                 }
               >
-                <IconButton onClick={() => handleFav(user.login.username)}>
+                <IconButton onClick={() => handleFav(user)}>
                   <FavoriteIcon color="error" />
                 </IconButton>
               </S.IconButtonWrapper>
@@ -80,4 +64,4 @@ const UserList = ({ usersList, isLoading, isOnlyFavs }) => {
   );
 };
 
-export default UserList;
+export default Users;

@@ -7,13 +7,12 @@ export const UserList = styled.div`
   align-items: center;
   height: 70vh;
   min-width: 50vw;
-  max-width: 50vw;
 `;
 
 export const List = styled.div`
   display: flex;
   flex-direction: column;
-  width: 500px;
+  min-width: 50vw;
   gap: 35px;
   height: calc(100vh - 270px);
   margin-block-start: 30px;
@@ -34,13 +33,14 @@ export const UserInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-height: 128px;
+  min-height: 128px;
   gap: 2px;
   overflow: hidden;
 `;
 
 export const UserPicture = styled.img`
   border-radius: 45%;
+  height: 128px;
 `;
 
 export const SpinnerWrapper = styled.div`

@@ -1,21 +1,9 @@
 import React from "react";
 import Text from "components/Text";
-import Users from "components/UserList/Users";
-import { usePeopleFetch } from "hooks";
+import FavoriteList from "components/UserList/FavoriteList";
 import * as S from "./style";
-import { useEffect } from "react";
-import { useState } from "react";
 
 const Favorites = () => {
-  const { users, isLoading } = usePeopleFetch();
-  const [favUsers, setFavUsers] = useState([]);
-
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
-    let newFavUsers = users;
-    newFavUsers = newFavUsers.filter((u) => favorites.includes(u.login.username));
-    setFavUsers(newFavUsers);
-  }, [favUsers]);
 
   return (
     <S.Home>
@@ -25,7 +13,7 @@ const Favorites = () => {
             Favorites
           </Text>
         </S.Header>
-        <Users usersList={users} isLoading={isLoading} isOnlyFavs={true} />
+        <FavoriteList />
       </S.Content>
     </S.Home>
   );

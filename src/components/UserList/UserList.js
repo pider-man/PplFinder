@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Users from "./Users";
 import CheckBox from "components/CheckBox";
+import Text from "components/Text";
+import Users from "./Users";
 import * as S from "./style";
 
 const UserList = ({ users, isLoading }) => {
   const [usersList, setUsersList] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const [hoveredUserId, setHoveredUserId] = useState();
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem("favorites"));
     setUsersList(users);
+    setFavorites(favs);
   }, [users]);
 
   const handleFilter = (val) => {
@@ -26,6 +31,32 @@ const UserList = ({ users, isLoading }) => {
     setUsersList(newUsersList);
   };
 
+  const handleFav = (user) => {
+    let newArr = JSON.parse(localStorage.getItem("favorites"));
+    let index = -1;
+    for (let i = 0; i < newArr.length; i++) {
+      if (user.login.uuid === newArr[i].login.uuid) {
+        index = i;
+      }
+    }
+    index > -1 ? newArr.splice(index, 1) : newArr.push(user);
+    localStorage.setItem("favorites", JSON.stringify(newArr));
+    setFavorites(newArr);
+    console.log(newArr);
+  };
+
+  const handleMouseEnter = (index) => {
+    setHoveredUserId(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredUserId();
+  };
+
+  if (usersList.length === 0 && !isLoading) {
+    return <Text size="22px">No Favorites</Text>;
+  }
+
   return (
     <S.UserList>
       <S.Filters>
@@ -35,7 +66,15 @@ const UserList = ({ users, isLoading }) => {
         <CheckBox value="Germany" onChange={handleFilter} label="Germany" />
         <CheckBox value="United States" onChange={handleFilter} label="United States" />
       </S.Filters>
-      <Users usersList={usersList} isLoading={isLoading} isOnlyFavs={false} />
+      <Users
+        usersList={usersList}
+        favorites={favorites}
+        isLoading={isLoading}
+        hoveredUserId={hoveredUserId}
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
+        handleFav={handleFav}
+      />
     </S.UserList>
   );
 };
