@@ -54,7 +54,7 @@ const UserList = ({ users, isLoading }) => {
   };
 
   if (usersList.length === 0 && !isLoading) {
-    return <Text size="22px">No Favorites</Text>;
+    return <Text size="22px">No Users</Text>;
   }
 
   return (
