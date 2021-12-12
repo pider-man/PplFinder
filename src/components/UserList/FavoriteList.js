@@ -8,7 +8,12 @@ const FavoriteList = () => {
   const [usersList, setUsersList] = useState([]);
 
   useEffect(() => {
-    const favs = JSON.parse(localStorage.getItem("favorites"));
+    let favs = [];
+    if (localStorage.getItem("favorites")) {
+      favs = JSON.parse(localStorage.getItem("favorites"));
+    } else {
+      localStorage.setItem("favorites", JSON.stringify([]));
+    }
     setUsersList(favs);
   }, []);
 
@@ -16,14 +21,13 @@ const FavoriteList = () => {
     let newArr = JSON.parse(localStorage.getItem("favorites"));
     let index = -1;
     for (let i = 0; i < newArr.length; i++) {
-      if(user.login.uuid === newArr[i].login.uuid){
+      if (user.login.uuid === newArr[i].login.uuid) {
         index = i;
       }
     }
     index > -1 ? newArr.splice(index, 1) : newArr.push(user);
     localStorage.setItem("favorites", JSON.stringify(newArr));
     setUsersList(newArr);
-    
   };
 
   if (usersList.length === 0) {
@@ -32,11 +36,7 @@ const FavoriteList = () => {
 
   return (
     <S.UserList>
-      <Users
-        usersList={usersList}
-        handleFav={handleFav}
-        showOnlyFavs={true}
-      />
+      <Users usersList={usersList} handleFav={handleFav} showOnlyFavs={true} />
     </S.UserList>
   );
 };
